@@ -170,9 +170,9 @@ Contributions are welcome! Feel free to:
 
 **Yuval Avidani**
 - 🌐 Website: [yuv.ai](https://yuv.ai)
-- 🐦 Twitter: [@yuvalav](https://x. com/yuvalav)
-- 📸 Instagram: [@yuval_770](https://instagram. com/yuval_770)
-- 🔗 LinkTree: [linktr.ee/yuvai](https://linktr. ee/yuvai)
+- 🐦 Twitter: [@yuvalav](https://x.com/yuvalav)
+- 📸 Instagram: [@yuval_770](https://instagram.com/yuval_770)
+- 🔗 LinkTree: [linktr.ee/yuvai](https://linktr.ee/yuvai)
 
 Founder of YUV.AI - Building the future of AI-powered creativity.
 
