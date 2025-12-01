@@ -86,6 +86,13 @@ export default function GenerationInterface({ feature, apiKey, onBack }: Generat
 User's custom requirements: ${prompt}
 
 Style: Photorealistic, professional thumbnail editing, viral content aesthetics`;
+      } else if (feature.id === 'style-transfer') {
+        // For style transfer, enhance the prompt if images are provided
+        if (images.length === 2) {
+          finalPrompt = prompt || 'Apply the artistic style and aesthetic from the first image to the content and composition of the second image. Preserve the subject matter of the second image while adopting the color palette, brushstrokes, texture, and artistic techniques of the first image.';
+        } else if (images.length === 1) {
+          finalPrompt = prompt || 'Transform this image into an artistic masterpiece. Apply creative stylization while maintaining the core composition and subject matter.';
+        }
       }
 
       const response = await fetch('/api/generate', {
@@ -107,11 +114,15 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
       if (data.success && data.imageData) {
         setGeneratedImage(`data:image/png;base64,${data.imageData}`);
       } else {
-        setError(data.error || 'Failed to generate image');
+        const errorMessage = data.error || 'Failed to generate image';
+        const debugInfo = data.debug ? ` (${data.debug})` : '';
+        const detailsInfo = data.details ? `\n\nDetails: ${data.details}` : '';
+        setError(errorMessage + debugInfo + detailsInfo);
+        console.error('Generation failed:', data);
       }
     } catch (err) {
-      setError('An error occurred during generation');
-      console.error(err);
+      setError('An error occurred during generation: ' + (err instanceof Error ? err.message : String(err)));
+      console.error('Generation error:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -135,36 +146,66 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+    <div className="w-full max-w-[1400px] mx-auto space-y-4 sm:space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-4 sm:p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4"
+        className="glass-card p-4 sm:p-5 md:p-6 space-y-4"
       >
-        <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-          <button
-            onClick={onBack}
-            className="btn-secondary text-xs sm:text-sm py-2 px-3 sm:px-4 flex-shrink-0"
-          >
-            ← Back
-          </button>
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold flex items-center gap-2" style={{ fontFamily: 'Orbitron, monospace' }}>
-              <span className="text-2xl sm:text-3xl md:text-4xl">{feature.icon}</span>
-              <span className="truncate">{feature.name}</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-[var(--foreground-muted)] line-clamp-2">{feature.description}</p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+            <button
+              onClick={onBack}
+              className="btn-secondary text-xs sm:text-sm py-2 px-3 sm:px-4 flex-shrink-0"
+            >
+              ← Back
+            </button>
+            <div className="min-w-0">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold flex items-center gap-2" style={{ fontFamily: 'Orbitron, monospace' }}>
+                <span className="text-2xl sm:text-3xl md:text-4xl">{feature.icon}</span>
+                <span className="truncate">{feature.name}</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-[var(--foreground-muted)] line-clamp-2">{feature.description}</p>
+            </div>
           </div>
+          <button
+            onClick={() => setShowSettings(!showSettings)}
+            className={`btn-secondary text-xs sm:text-sm py-2.5 px-4 sm:px-5 flex items-center gap-2 flex-shrink-0 self-end sm:self-auto transition-all ${
+              showSettings
+                ? 'bg-[var(--neon-cyan)]/20 border-[var(--neon-cyan)] shadow-[var(--glow-cyan)]'
+                : 'hover:border-[var(--neon-cyan)] hover:bg-[var(--neon-cyan)]/10'
+            }`}
+          >
+            <Settings size={18} className="sm:w-5 sm:h-5" />
+            <span className="font-semibold">Settings</span>
+          </button>
         </div>
-        <button
-          onClick={() => setShowSettings(!showSettings)}
-          className={`btn-secondary text-xs sm:text-sm py-2 px-3 sm:px-4 flex items-center gap-2 flex-shrink-0 self-end sm:self-auto ${showSettings ? 'bg-[var(--neon-cyan)]/20' : ''}`}
-        >
-          <Settings size={16} className="sm:w-[18px] sm:h-[18px]" />
-          <span className="hidden sm:inline">Settings</span>
-          <span className="sm:hidden">⚙️</span>
-        </button>
+
+        {/* Quick Settings Preview */}
+        {!showSettings && (
+          <div className="flex flex-wrap gap-2 sm:gap-3 items-center text-xs sm:text-sm text-[var(--foreground-muted)]">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--background-elevated)] border border-white/10">
+              <span className="font-medium text-[var(--neon-cyan)]">{config.aspectRatio}</span>
+              <span>Aspect Ratio</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--background-elevated)] border border-white/10">
+              <span className="font-medium text-[var(--neon-purple)]">{config.imageSize}</span>
+              <span>Quality</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--background-elevated)] border border-white/10">
+              <span className={`font-medium ${feature.modelType === 'pro' ? 'text-[var(--neon-purple)]' : 'text-[var(--neon-cyan)]'}`}>
+                {feature.modelType === 'pro' ? 'Gemini 3 Pro' : 'Gemini 2.5 Flash'}
+              </span>
+            </div>
+            <button
+              onClick={() => setShowSettings(true)}
+              className="text-[var(--neon-cyan)] hover:text-[var(--neon-purple)] transition-colors ml-auto"
+            >
+              Click to adjust →
+            </button>
+          </div>
+        )}
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
@@ -224,19 +265,30 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
 
           {/* Prompt Input */}
           <div className="glass-card p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
               <h3 className="text-lg sm:text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
                 Prompt
               </h3>
-              {feature.id === 'social-media-thumbnail' && (
-                <button
-                  onClick={() => setPrompt(socialMediaTemplates[Math.floor(Math.random() * socialMediaTemplates.length)])}
-                  className="text-xs text-[var(--neon-cyan)] hover:text-[var(--neon-purple)] flex items-center gap-1"
-                >
-                  <Sparkles size={14} />
-                  Random Template
-                </button>
-              )}
+              <div className="flex items-center gap-2 flex-wrap">
+                {feature.examplePrompt && (
+                  <button
+                    onClick={() => setPrompt(feature.examplePrompt!)}
+                    className="text-xs text-[var(--banana-yellow)] hover:text-[var(--neon-cyan)] flex items-center gap-1 px-2 py-1 rounded-lg bg-[var(--banana-yellow)]/10 border border-[var(--banana-yellow)]/30"
+                  >
+                    <Sparkles size={14} />
+                    Use Example
+                  </button>
+                )}
+                {feature.id === 'social-media-thumbnail' && (
+                  <button
+                    onClick={() => setPrompt(socialMediaTemplates[Math.floor(Math.random() * socialMediaTemplates.length)])}
+                    className="text-xs text-[var(--neon-cyan)] hover:text-[var(--neon-purple)] flex items-center gap-1"
+                  >
+                    <Sparkles size={14} />
+                    Random Template
+                  </button>
+                )}
+              </div>
             </div>
 
             <textarea
@@ -274,9 +326,11 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
                   Generation Settings
                 </h3>
 
-                <div className="space-y-3">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Aspect Ratio</label>
+                    <label className="block text-sm font-medium mb-2 text-[var(--foreground)]">
+                      Aspect Ratio
+                    </label>
                     <select
                       value={config.aspectRatio}
                       onChange={(e) => setConfig({ ...config, aspectRatio: e.target.value as any })}
@@ -292,24 +346,42 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
                     </select>
                   </div>
 
-                  {feature.modelType === 'pro' && (
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Image Quality</label>
-                      <select
-                        value={config.imageSize}
-                        onChange={(e) => setConfig({ ...config, imageSize: e.target.value as any })}
-                        className="w-full"
-                      >
-                        <option value="1K">1K (Fast)</option>
-                        <option value="2K">2K (Balanced)</option>
-                        <option value="4K">4K (Highest Quality)</option>
-                      </select>
-                    </div>
-                  )}
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-[var(--foreground)]">
+                      Image Quality
+                      {feature.modelType === 'flash' && (
+                        <span className="ml-2 text-xs text-[var(--neon-cyan)] font-normal">
+                          (Gemini 2.5 Flash)
+                        </span>
+                      )}
+                      {feature.modelType === 'pro' && (
+                        <span className="ml-2 text-xs text-[var(--neon-purple)] font-normal">
+                          (Gemini 3 Pro)
+                        </span>
+                      )}
+                    </label>
+                    <select
+                      value={config.imageSize}
+                      onChange={(e) => setConfig({ ...config, imageSize: e.target.value as any })}
+                      className="w-full"
+                    >
+                      <option value="1K">1K - Fast Generation</option>
+                      <option value="2K">2K - Balanced Quality</option>
+                      <option value="4K">4K - Maximum Quality</option>
+                    </select>
+                    <p className="text-xs text-[var(--foreground-muted)] mt-1.5">
+                      Higher quality takes longer but produces better results
+                    </p>
+                  </div>
 
                   {feature.id === 'search-grounding' && (
                     <div className="flex items-center justify-between p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                      <span className="text-sm">Use Google Search</span>
+                      <div>
+                        <span className="text-sm font-medium">Use Google Search</span>
+                        <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
+                          Ground generation with real-time data
+                        </p>
+                      </div>
                       <input
                         type="checkbox"
                         checked={config.useGoogleSearch}

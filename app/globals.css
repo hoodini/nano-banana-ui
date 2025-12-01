@@ -74,29 +74,32 @@ body::before {
   0% {
     transform: translate(0, 0);
   }
+
   100% {
     transform: translate(50px, 50px);
   }
 }
 
-/* Glassmorphism Card */
+/* Glassmorphism Card - Enhanced with Premium Spacing */
 .glass-card {
   background: var(--background-glass);
   backdrop-filter: blur(20px);
   border: var(--border-glass);
-  border-radius: 24px;
+  border-radius: 28px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  border-color: rgba(0, 255, 249, 0.3);
+  border-color: rgba(0, 255, 249, 0.4);
   box-shadow:
-    0 12px 48px rgba(0, 0, 0, 0.4),
+    0 20px 60px rgba(0, 0, 0, 0.5),
     var(--glow-cyan),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
 }
 
 /* Neon Text Glow */
@@ -132,6 +135,7 @@ body::before {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -143,6 +147,7 @@ body::before {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -150,9 +155,12 @@ body::before {
 }
 
 @keyframes glowPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     filter: brightness(1) drop-shadow(0 0 10px currentColor);
   }
+
   50% {
     filter: brightness(1.2) drop-shadow(0 0 20px currentColor);
   }
@@ -228,7 +236,9 @@ body::before {
 }
 
 /* Input Styles */
-input, textarea, select {
+input,
+textarea,
+select {
   background: rgba(18, 18, 26, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--foreground);
@@ -238,13 +248,16 @@ input, textarea, select {
   transition: all 0.3s ease;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: var(--neon-cyan);
   box-shadow: 0 0 0 3px rgba(0, 255, 249, 0.1), var(--glow-cyan);
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--foreground-muted);
 }
 
