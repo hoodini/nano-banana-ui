@@ -65,24 +65,24 @@ export default function ApiKeyConfig({ onApiKeySet }: ApiKeyConfigProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-4 md:p-6"
     >
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="glass-card p-8 max-w-2xl w-full relative overflow-hidden"
+        className="glass-card p-5 sm:p-6 md:p-8 max-w-2xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--neon-cyan)] via-[var(--neon-purple)] to-[var(--neon-pink)]" />
 
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-[var(--neon-cyan)]/20 to-[var(--neon-purple)]/20">
-            <Key className="text-[var(--neon-cyan)]" size={24} />
+        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+          <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-br from-[var(--neon-cyan)]/20 to-[var(--neon-purple)]/20 flex-shrink-0">
+            <Key className="text-[var(--neon-cyan)]" size={20} />
           </div>
-          <div>
-            <h2 className="text-2xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
+          <div className="min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
               Configure API Key
             </h2>
-            <p className="text-sm text-[var(--foreground-muted)]">
+            <p className="text-xs sm:text-sm text-[var(--foreground-muted)]">
               Enter your Google AI Studio API key to get started
             </p>
           </div>

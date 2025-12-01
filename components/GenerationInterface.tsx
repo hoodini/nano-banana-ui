@@ -135,48 +135,49 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-6 flex items-center justify-between"
+        className="glass-card p-4 sm:p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
           <button
             onClick={onBack}
-            className="btn-secondary text-sm py-2 px-4"
+            className="btn-secondary text-xs sm:text-sm py-2 px-3 sm:px-4 flex-shrink-0"
           >
             ← Back
           </button>
-          <div>
-            <h2 className="text-2xl font-bold flex items-center gap-2" style={{ fontFamily: 'Orbitron, monospace' }}>
-              <span className="text-4xl">{feature.icon}</span>
-              {feature.name}
+          <div className="min-w-0">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold flex items-center gap-2" style={{ fontFamily: 'Orbitron, monospace' }}>
+              <span className="text-2xl sm:text-3xl md:text-4xl">{feature.icon}</span>
+              <span className="truncate">{feature.name}</span>
             </h2>
-            <p className="text-sm text-[var(--foreground-muted)]">{feature.description}</p>
+            <p className="text-xs sm:text-sm text-[var(--foreground-muted)] line-clamp-2">{feature.description}</p>
           </div>
         </div>
         <button
           onClick={() => setShowSettings(!showSettings)}
-          className={`btn-secondary text-sm py-2 px-4 flex items-center gap-2 ${showSettings ? 'bg-[var(--neon-cyan)]/20' : ''}`}
+          className={`btn-secondary text-xs sm:text-sm py-2 px-3 sm:px-4 flex items-center gap-2 flex-shrink-0 self-end sm:self-auto ${showSettings ? 'bg-[var(--neon-cyan)]/20' : ''}`}
         >
-          <Settings size={18} />
-          Settings
+          <Settings size={16} className="sm:w-[18px] sm:h-[18px]" />
+          <span className="hidden sm:inline">Settings</span>
+          <span className="sm:hidden">⚙️</span>
         </button>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
         {/* Input Section */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="space-y-6"
+          className="space-y-4 sm:space-y-5 md:space-y-6"
         >
           {/* Image Upload */}
           {feature.requiresImage && (
-            <div className="glass-card p-6 space-y-4">
-              <h3 className="text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
+            <div className="glass-card p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
+              <h3 className="text-lg sm:text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
                 Upload Image{feature.requiresMultipleImages ? 's' : ''}
               </h3>
 
@@ -222,9 +223,9 @@ Style: Photorealistic, professional thumbnail editing, viral content aesthetics`
           )}
 
           {/* Prompt Input */}
-          <div className="glass-card p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
+          <div className="glass-card p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="text-lg sm:text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
                 Prompt
               </h3>
               {feature.id === 'social-media-thumbnail' && (

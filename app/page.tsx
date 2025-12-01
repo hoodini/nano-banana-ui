@@ -20,23 +20,23 @@ export default function Home() {
 
       {/* Header */}
       <header className="relative z-10 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+          <div className="flex items-center justify-between gap-4">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-4"
+              className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0"
             >
-              <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--banana-yellow)] to-orange-500 flex items-center justify-center text-2xl animate-glow-pulse">
+              <div className="relative flex-shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[var(--banana-yellow)] to-orange-500 flex items-center justify-center text-xl sm:text-2xl animate-glow-pulse">
                   🍌
                 </div>
               </div>
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold neon-text" style={{ fontFamily: 'Orbitron, monospace', color: 'var(--neon-cyan)' }}>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold neon-text truncate" style={{ fontFamily: 'Orbitron, monospace', color: 'var(--neon-cyan)' }}>
                   YUV.AI Nano Banana Pro
                 </h1>
-                <p className="text-sm text-[var(--foreground-muted)]">
+                <p className="text-xs sm:text-sm text-[var(--foreground-muted)] hidden sm:block">
                   Powered by Google Gemini Image Generation
                 </p>
               </div>
@@ -88,15 +88,15 @@ export default function Home() {
       <ApiKeyConfig onApiKeySet={setApiKey} />
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
         {!selectedFeature ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-12"
+            className="space-y-8 sm:space-y-10 md:space-y-12"
           >
             {/* Hero Section */}
-            <div className="text-center space-y-6 py-12">
+            <div className="text-center space-y-4 sm:space-y-6 py-6 sm:py-8 md:py-12 px-4">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -111,7 +111,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight px-2"
                 style={{ fontFamily: 'Orbitron, monospace' }}
               >
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--neon-cyan)] via-[var(--neon-purple)] to-[var(--neon-pink)]">
@@ -127,7 +127,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-lg md:text-xl text-[var(--foreground-muted)] max-w-3xl mx-auto"
+                className="text-base sm:text-lg md:text-xl text-[var(--foreground-muted)] max-w-3xl mx-auto px-2"
               >
                 Harness the full power of Google's Gemini AI to generate, edit, and transform images
                 with unprecedented quality and control. From text-to-image to viral social media thumbnails.
@@ -170,9 +170,9 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+      <footer className="relative z-10 border-t border-white/10 mt-12 sm:mt-16 md:mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
             <div className="text-center md:text-left">
               <p className="text-sm text-[var(--foreground-muted)]">
                 Created with 💜 by{' '}
